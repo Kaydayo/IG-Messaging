@@ -1,22 +1,29 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, Logger } from '@nestjs/common';
+import { ExtractJwt } from 'passport-jwt';
+import { SupabaseAuthStrategy } from 'nestjs-supabase-auth';
 import { ConfigService } from '@nestjs/config';
-import { AuthUser } from '@supabase/supabase-js';
 
 @Injectable()
-export class SupabaseStrategy extends PassportStrategy(Strategy) {
-    private readonly logger = new Logger(SupabaseStrategy.name);
-
-    constructor(private readonly configService: ConfigService) {
+export class SupabaseStrategy extends PassportStrategy(
+    SupabaseAuthStrategy,
+    'supabase',
+) {
+    public constructor(private configService:ConfigService) {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: configService.get('SUPABASE_JWT_SECRET'),
+            supabaseUrl: configService.get<string>('SUPABASE_API_URL'),
+            supabaseKey: configService.get<string>('SUPABASE_JWT_SECRET'),
+            supabaseOptions: {},
+            supabaseJwtSecret: configService.get<string>('SUPABASE_JWT_SECRET'),
+            extractor: ExtractJwt.fromAuthHeaderAsBearerToken(),
         });
     }
 
-    async validate(user: AuthUser) {
-        return user;
+    async validate(payload: any): Promise<any> {
+        super.validate(payload);
+    }
+
+    authenticate(req) {
+        super.authenticate(req);
     }
 }
