@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Supabase } from '../common/supabase';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -17,7 +17,7 @@ export class UsersService {
 
     async getOne(query:any) {
         const { data: result, error } = await this.supabaseClient.from('users').select().match(query)
-        if (error) throw new BadRequestException(error.message)
+        if (error) throw new NotFoundException(error.message)
         return result
     }
 
@@ -36,9 +36,9 @@ export class UsersService {
         return result;
     }
 
-    async delete(table: string, query: any) {
+    async delete(query: any) {
         const { data: result, error } = await this.supabaseClient
-            .from(table)
+            .from('users')
             .delete()
             .match(query);
         if (error) throw new BadRequestException(error.message);
