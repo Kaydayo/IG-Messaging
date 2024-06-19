@@ -1,27 +1,28 @@
 import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDTO } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) {
         
     }
-    @Post()
-    async create(@Body() body: any) {
+    @Post('/create')
+    async create(@Body() body: CreateUserDTO) {
         return this.userService.create(body);
     }
 
-    @Get()
+    @Get('/get')
     async read(@Query() query: any) {
         return this.userService.getOne(query);
     }
 
-    @Put()
+    @Put('/update')
     async update(@Query() query: any, @Body() body: any) {
         return this.userService.update(query, body);
     }
 
-    @Delete()
+    @Delete('/delete')
     async delete(@Query() query: any) {
         return this.userService.delete(query);
     }

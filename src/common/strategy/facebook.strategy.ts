@@ -1,14 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-facebook";
 import { UsersService } from "../../users/users.service";
+import { AuthService } from "../../auth/auth.service";
 
 @Injectable()
-export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
+export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     constructor(
         private readonly configService: ConfigService,
-        private userService: UsersService
+        private authService:AuthService
     ) {
         super({
             clientID:configService.get<string>('APP_ID'),
@@ -25,18 +26,22 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
         profile: Profile,
         done: (err: any, user: any, info?: any) => void
     ): Promise<any> {
-        console.log(JSON.stringify(profile))
-        const { name, emails } = profile;
-        const user = {
-            email: emails[0].value,
-            firstName: name.givenName,
-            lastName: name.familyName,
-        };
-        const payload = {
-            user,
-            accessToken,
-        };
+        try {
+            console.log(JSON.stringify(profile))
+            const { name, emails } = profile;
+            const user = {
+                email: emails[0].value,
+                firstName: name.givenName,
+                lastName: name.familyName,
+            };
+            const payload = {
+                user,
+                accessToken,
+            };
 
-        done(null, payload);
+            done(null, payload);
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
