@@ -1,9 +1,7 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { HttpStatus, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-facebook";
-import { UsersService } from "../../users/users.service";
-import { AuthService } from "../../auth/auth.service";
 import { CreateUserDTO } from "../../users/dto/create-user.dto";
 
 @Injectable()
@@ -22,7 +20,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
 
     async validate(
         accessToken: string,
-        refreshToken: string,
+        _refreshToken: string,
         profile: Profile,
         done: (err: any, user: any, info?: any) => void
     ): Promise<any> {
@@ -43,7 +41,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
 
             done(null, payload);
         } catch (error) {
-            console.log(error)
+            throw new UnauthorizedException(error.message)
         }
     }
 }

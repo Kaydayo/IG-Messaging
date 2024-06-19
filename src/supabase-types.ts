@@ -139,9 +139,6 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
   : never
-    
-export type User = Database['public']['Tables']['users']['Row'];
-
 
 export type InsertUser = Database['public']['Tables']['users']['Insert'];
 
