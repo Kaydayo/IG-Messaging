@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { CreateUserDTO } from '../users/dto/create-user.dto';
+import { User } from '../common/schema/user';
 
 
 
@@ -9,8 +10,15 @@ import { CreateUserDTO } from '../users/dto/create-user.dto';
 export class AuthService {
     constructor(private usersService: UsersService) { }
     
-    async loginOrSignUpUser(data:CreateUserDTO) {
-        const findUser = await this.usersService.getOne(data)
-        console.log(findUser,"FIND USER")
+    async loginOrSignUpUser(data: CreateUserDTO) {
+        let findUser;
+        try {
+            findUser = await this.usersService.getOne({ email: data?.email })
+        } catch (error) {
+            findUser = await this.usersService.create(data)
+        } finally {
+            
+        }
+       
     }
 }

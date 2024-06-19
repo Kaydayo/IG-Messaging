@@ -28,7 +28,7 @@ export class Supabase {
 
         this.clientInstance = createClient(
             this.configService.get('SUPABASE_API_URL'),
-            this.configService.get('SUPABASE_JWT_SECRET'),
+            this.configService.get('SUPABASE_API_KEY'),
         );
 
         return this.clientInstance;

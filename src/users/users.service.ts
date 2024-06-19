@@ -12,26 +12,26 @@ export class UsersService {
     }
 
     async create(data:Partial<User>):Promise<User|null> {
-        const { data: result, error } = await this.supabaseClient.from('users').insert(data)
+        const { data: result, error } = await this.supabaseClient.from('users_meta').insert(data)
         if (error) throw new BadRequestException(error.message)
         return result
     }
 
-    async getOne(query:any):Promise<any[]> {
-        const { data: result, error } = await this.supabaseClient.from('users').select().match(query)
+    async getOne(query: any): Promise<any[]> {
+        const { data: result, error } = await this.supabaseClient.from('users_meta').select('*').match(query).single()
         if (error) throw new NotFoundException(error.message)
         return result
     }
 
     async getAll() {
-        const { data: result, error } = await this.supabaseClient.from('users').select()
+        const { data: result, error } = await this.supabaseClient.from('users_meta').select('*')
         if (error) throw new BadRequestException(error.message)
         return result
     }
 
     async update(query:any, data:any) {
         const { data: result, error } = await this.supabaseClient
-            .from('users')
+            .from('users_meta')
             .update(data)
             .match(query);
         if (error) throw new BadRequestException(error.message);
@@ -40,7 +40,7 @@ export class UsersService {
 
     async delete(query: any) {
         const { data: result, error } = await this.supabaseClient
-            .from('users')
+            .from('users_meta')
             .delete()
             .match(query);
         if (error) throw new BadRequestException(error.message);

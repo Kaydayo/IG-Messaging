@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards, HttpStatus, Req } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { type Request } from "express";
 import { AuthService } from "./auth.service";
-import { User } from "../common/schema/user";
+
 
 
 @Controller('auth')
@@ -17,7 +17,8 @@ export class AuthController {
     @Get("/facebook/redirect")
     @UseGuards(AuthGuard("facebook"))
     async facebookLoginRedirect(@Req() req: Request): Promise<any> {
-        await this.authService.loginOrSignUpUser(req?.user)
+        const { user } = req?.user
+        await this.authService.loginOrSignUpUser(user)
         return {
             statusCode: HttpStatus.OK,
             data: req.user,
