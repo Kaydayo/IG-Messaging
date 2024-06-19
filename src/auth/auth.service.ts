@@ -8,5 +8,6 @@ export class AuthService {
     
     async loginOrSignUpUser(data:CreateUserDTO) {
         const findUser = await this.usersService.getOne(data)
+        console.log(findUser,"FIND USER")
     }
 }

@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from '@nestjs/class-validator'
 export class CreateUserDTO {
     @IsNotEmpty()
     @IsString()
-    first__name: string;
+    first_name: string;
 
     @IsNotEmpty()
     @IsString()
