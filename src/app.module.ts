@@ -6,10 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { FacebookStrategy } from './common/strategy/facebook.strategy';
 import { UsersModule } from './users/users.module';
 import { PassportModule } from '@nestjs/passport';
+import { InstagramModule } from './instagram/instagram.module';
+
 
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, UsersModule, PassportModule.register({ defaultStrategy: 'facebook' })],
+  imports: [ConfigModule.forRoot(), AuthModule, UsersModule, PassportModule.register({ defaultStrategy: 'facebook' }), InstagramModule],
   controllers: [AppController],
   providers: [AppService, FacebookStrategy],
 })
