@@ -1,9 +1,11 @@
-import { User as LoggedInUser } from './src/supabase-types';
-
+import { User as LoggedInUser } from "./src/common/schema/user";
 declare global {
     namespace Express {
         export interface Request {
-            user?: LoggedInUser;
+            user?: {
+                user: LoggedInUser,
+                accessToken:string
+            };
         }
     }
 }
